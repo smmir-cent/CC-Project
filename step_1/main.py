@@ -8,6 +8,10 @@ import yaml
 import redis
 import pyshorteners
 import urllib.parse
+from datetime import timedelta
+import fcntl
+import struct
+
 
 host_name = "0.0.0.0"
 server_port = 8080
@@ -16,12 +20,6 @@ redis_ip = "127.0.0.1"
 redis_passwd = ""
 redis_connection = None
 shortener = pyshorteners.Shortener()
-
-def set_default(obj):
-    if isinstance(obj, set):
-        return list(obj)
-    raise TypeError
-
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -35,27 +33,24 @@ class MyServer(BaseHTTPRequestHandler):
 
 
     def do_POST(self):
-
-        print("**********")
-        print(self.path)
-        print("**********")
-
+        print("#######################################################")
         content_length = int(self.headers['Content-Length']) 
         post_data = self.rfile.read(content_length) 
         print(content_length)
-        print(post_data.decode('utf-8'))
-        print(str(self.headers))
-        self.send_response(200)
-        print("**********")
-        postData = urllib.parse.parse_qs(post_data.decode('utf-8'))
-        print(postData)
-        ## todo parse data
-        # shortener.tinyurl.short(data)
-        print("**********")
-
-        # self._set_response()
-        self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
-
+        data = post_data.decode('utf-8')
+        key_ = "url="
+        tiny_url = "https://tinyurl.com/"
+        if data.find(key_) == -1:
+            # not validate data
+            pass 
+        else:
+            url = data[len(key_):]
+            shorted_url = shortener.tinyurl.short(url)
+            print(shorted_url)
+            redis_connection.setex(shorted_url,timedelta(seconds=expire_time),value=url)
+            self.send_response(200)
+            self.wfile.write(bytes(f'Requested shorted_url: this_server_ip:{server_port}/{shorted_url[len(tiny_url):]}',"utf-8"))
+        print("#######################################################")
 
 
 if __name__ == "__main__":  
@@ -96,7 +91,7 @@ if __name__ == "__main__":
 # pip3 install redis
 # pip3 install pyshorteners
 # curl 192.168.220.132:1111/hello
-# curl --request POST 192.168.220.132:1111 --form 'u="hello-yay"'
+# curl --request POST 192.168.220.132:1111 -d url=hello
 ###########################################################
 ###########################################################
 ###########################################################
