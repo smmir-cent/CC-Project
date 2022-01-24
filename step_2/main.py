@@ -51,8 +51,8 @@ class MyServer(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":  
-    if os.path.exists('/src/config.yml'):
-        with open("/src/config.yml", 'r') as f:
+    if os.path.exists('config.yml'):
+        with open("config.yml", 'r') as f:
             config = yaml.safe_load(f)
             print(f'port = {config["port"]}  expire_time = {config["expire_time"]} redis_ip = {config["redis_ip"]} redis_passwd = {config["redis_passwd"]}')
             server_port = config["port"]
@@ -89,6 +89,7 @@ if __name__ == "__main__":
 # pip3 install pyshorteners
 # curl 192.168.220.132:1111/hello
 # curl --request POST 192.168.220.132:1111 -d url=hello
+# curl --request POST 172.17.0.2:1111 -d url=hello
 ###########################################################
 ###########################################################
 ###########################################################
