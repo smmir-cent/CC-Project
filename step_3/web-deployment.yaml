@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: surl
+  labels:
+    app: surl
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: surl
+  template:
+    metadata:
+      labels:
+        app: surl
+    spec:
+      containers:
+        - name: surl
+          image: smahdimir/surl:latest
+          volumeMounts:
+          - mountPath: /config.yml
+            subPath: config.yml
+            name: config-map
+
+          ports:
+            - containerPort: 2222
+      volumes:
+      - name: config-map
+        configMap:
+          name: webserver-config

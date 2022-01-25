@@ -1,7 +1,6 @@
 FROM alpine
 RUN apk update
 RUN apk add curl && apk add python3 && apk add py3-pip &&  pip3 install requests && pip3 install pyyaml && pip3 install redis && pip3 install pyshorteners
-WORKDIR /
 COPY . .
 CMD python3 main.py
 # docker build -t surl .
