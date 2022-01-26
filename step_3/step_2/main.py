@@ -130,6 +130,8 @@ minikube kubectl delete -- -f step_3/web-deployment.yaml
 minikube kubectl delete -- -f step_3/secret.yaml
 minikube kubectl delete -- -f step_3/redis-deployment.yaml
 minikube kubectl delete -- -f step_3/redis-service.yaml
+minikube kubectl delete -- -f step_3/redis-pv.yaml
+minikube kubectl delete -- -f step_3/redis-pvc.yaml
 
 #######################################################################
 #######################################################################
@@ -141,6 +143,10 @@ minikube kubectl apply -- -f step_3/config-map.yaml
 minikube kubectl apply -- -f step_3/web-deployment.yaml
 minikube kubectl apply -- -f step_3/web-service.yaml
 minikube kubectl apply -- -f step_3/secret.yaml
+
+minikube kubectl apply -- -f step_3/redis-pv.yaml
+minikube kubectl apply -- -f step_3/redis-pvc.yaml
+
 minikube kubectl apply -- -f step_3/redis-deployment.yaml
 minikube kubectl apply -- -f step_3/redis-service.yaml
 minikube kubectl get pods
