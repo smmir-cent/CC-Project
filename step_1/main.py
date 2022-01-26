@@ -21,12 +21,18 @@ class MyServer(BaseHTTPRequestHandler):
 
         requested_url = socket.gethostbyname(socket.gethostname())+":"+str(server_port) + self.path
         print("requested_url: " + requested_url)
-        real_requested_url = redis_connection.get(requested_url).decode("utf-8")
-        response = requests.get(real_requested_url)
+        response = "Not Found ===> first post it !"
+        real_requested_url = redis_connection.get(requested_url)
+        if real_requested_url != None:
+            real_requested_url = real_requested_url.decode("utf-8")
+            try:
+                response = requests.get(real_requested_url).text
+            except requests.exceptions.RequestException as e:  # This is the correct syntax
+                response = "url is not valid"
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-        self.wfile.write(bytes(json.dumps({f'{requested_url}': response.text},indent=4),"utf-8"))
+        self.wfile.write(bytes(json.dumps({f'{requested_url}': response},indent=4),"utf-8"))
         self.wfile.write(bytes("\n", "utf-8"))
 
 
