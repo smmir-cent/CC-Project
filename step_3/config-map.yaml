@@ -7,5 +7,4 @@ data:
   config.yml: |-
     port: 2222
     expire_time: 75
-    redis_ip: redis-service
-    redis_passwd: 123      
+    redis_ip: redis-service      

@@ -21,7 +21,12 @@ spec:
           - mountPath: /config.yml
             subPath: config.yml
             name: config-map
-
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASSWORD
+                  name: redis-secret
           ports:
             - containerPort: 2222
       volumes:

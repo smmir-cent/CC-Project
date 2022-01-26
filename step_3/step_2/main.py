@@ -74,13 +74,13 @@ if __name__ == "__main__":
     if os.path.exists('config.yml'):
         with open("config.yml", 'r') as f:
             config = yaml.safe_load(f)
-            print(f'port = {config["port"]}  expire_time = {config["expire_time"]} redis_ip = {config["redis_ip"]} redis_passwd = {config["redis_passwd"]}')
+            print(f'port = {config["port"]}  expire_time = {config["expire_time"]} redis_ip = {config["redis_ip"]}')
             server_port = config["port"]
             expire_time = config["expire_time"]
             redis_ip = config["redis_ip"]
-            redis_passwd = config["redis_passwd"]
+            # redis_passwd = config["redis_passwd"]
+            redis_passwd = os.environ.get('REDIS_PASSWORD')
             redis_connection = redis.Redis(host=redis_ip,password=redis_passwd) 
-
     else:
         print(f'(default) ==> port = {server_port} expire_time = {expire_time} redis_ip = {redis_ip} redis_passwd = {redis_passwd}')
 
