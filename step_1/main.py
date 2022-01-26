@@ -19,10 +19,11 @@ redis_connection = None
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
 
-        requested_url = socket.gethostbyname(socket.gethostname())+":"+str(server_port) + self.path
-        print("requested_url: " + requested_url)
+        # requested_url = socket.gethostbyname(socket.gethostname())+":"+str(server_port) + self.path
+        requested_url = self.path
+        print("requested_url: " + requested_url[1:])
         response = "Not Found ===> first post it !"
-        real_requested_url = redis_connection.get(requested_url)
+        real_requested_url = redis_connection.get(requested_url[1:])
         if real_requested_url != None:
             real_requested_url = real_requested_url.decode("utf-8")
             try:
@@ -55,7 +56,7 @@ class MyServer(BaseHTTPRequestHandler):
             shorted_url = socket.gethostbyname(socket.gethostname())+":"+str(server_port) + "/"
             if hash_length<len(hash_object.hexdigest()):
                 hash = hash_object.hexdigest()[:hash_length]
-                shorted_url += hash
+                shorted_url = hash
             else:
                 raise Exception("Length too long. Length of {y} when hash length is {x}.".format(x=str(len(hash_object.hexdigest())),y=hash_length))
 
