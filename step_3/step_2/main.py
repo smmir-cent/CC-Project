@@ -149,24 +149,21 @@ minikube kubectl apply -- -f step_3/redis-pvc.yaml
 
 minikube kubectl apply -- -f step_3/redis-deployment.yaml
 minikube kubectl apply -- -f step_3/redis-service.yaml
-minikube kubectl get pods
 
-minikube kubectl -- attach net-utils -c net-utils -i -t
-minikube kubectl -- attach surl-85fd4cd7f4-dw7tk -it
-
-
-
-############# test
 minikube kubectl get cm
 minikube kubectl get deployments.apps
+minikube kubectl get secret
+minikube kubectl get pods
+minikube kubectl get services
+minikube kubectl get ep
 
-
+############# test
+minikube kubectl -- attach net-utils -c net-utils -i -t
 curl --request POST web-service/api -d url=http://google.com
 curl web-service/api/aa2239
 
+minikube kubectl -- attach surl-85fd4cd7f4-dw7tk -it
 '''
-
-
 ###########################################################
 ###########################################################
 ###########################################################
