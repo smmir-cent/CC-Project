@@ -5,6 +5,7 @@ metadata:
     app: redis
   name: redis
 spec:
+  serviceName: "redis-service"
   replicas: 1
   selector:
     matchLabels:
@@ -33,7 +34,7 @@ spec:
                         
   volumeClaimTemplates:
   - metadata:
-      name: data:
+      name: data
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: standard
