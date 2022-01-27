@@ -132,7 +132,7 @@ minikube kubectl delete -- -f step_3/redis-deployment.yaml
 minikube kubectl delete -- -f step_3/redis-service.yaml
 minikube kubectl delete -- -f step_3/redis-pv.yaml
 minikube kubectl delete -- -f step_3/redis-pvc.yaml
-
+minikube kubectl delete -- -f step_3/hpa.yaml
 #######################################################################
 #######################################################################
 #######################################################################
@@ -150,6 +150,8 @@ minikube kubectl apply -- -f step_3/redis-pvc.yaml
 minikube kubectl apply -- -f step_3/redis-deployment.yaml
 minikube kubectl apply -- -f step_3/redis-service.yaml
 
+minikube kubectl apply -- -f step_3/hpa.yaml
+
 minikube kubectl get cm
 minikube kubectl get deployments.apps
 minikube kubectl get secret
@@ -161,6 +163,9 @@ minikube kubectl get ep
 minikube kubectl -- attach net-utils -c net-utils -i -t
 curl --request POST web-service/api -d url=http://google.com
 curl web-service/api/aa2239
+
+
+kubectl autoscale deployment web-deployment.yaml --cpu-percent=60 --min=2 --max=8
 
 minikube kubectl -- attach surl-85fd4cd7f4-dw7tk -it
 '''

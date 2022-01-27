@@ -1,20 +1,5 @@
 version: "3.5"
 services:
-  
-  web:
-    build: ./step_2
-
-    ports:
-      - "80:2222"
-        
-    depends_on:
-      - redis
-
-    environment:
-      port: 2222   
-      expire_time: 75
-      redis_ip: 'redis-service'
-
 
   redis:
     image: "redis:6.2.6"
@@ -23,16 +8,17 @@ services:
     volumes:
       - /data/redis:/data
     secrets:
-      - redis_secret
-      - redis_secret_file
+      - redis-secret
+  
+  web:
+    build: ./step_2
 
+    ports:
+      - "80:1111"
+        
+    depends_on:
+      - redis
 
 secrets:
-  redis_secret:
+  redis-secret:
     external: true
-    name: redis-secret
-  redis_secret_file:
-    file: secret.txt
-
-
-# Dont forget to create secret
